@@ -1,0 +1,30 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflo
+name: Comments on Repo Activity PR
+
+# Controls when the action will run. 
+on:
+  pull_request:
+    types:
+      - labled
+    branches: [ main ]
+
+jobs:
+  check-repo-activity-for-pr:
+    if: github.event.label.name == 'contribution_to_open_source'
+    runs-on: ubuntu-latest
+    name: PR activity check
+    steps:
+    - name: Run index
+      id: index
+      uses: actions/milkyway@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        pr_body: ${{ github.event.pull_request.body }}
+        pr_title: ${{ github.event.pull_request.title }}
+        branch: ${{ GITHUB_REPOSITORY }}
