@@ -19,7 +19,10 @@ Checks PR requests with a repository link that they fulfill certain activity req
 
 ## Outputs
 
-This action has no outputs.
+### `repo`
+
+GitHub repository mentioned in `pr_body` if any. 
+
 
 ## Example usage
 
