@@ -27,4 +27,5 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         pr_body: ${{ github.event.pull_request.body }}
         pr_title: ${{ github.event.pull_request.title }}
+        pr_id: ${{ github.event.pull_request.number }}
         branch: ${{ GITHUB_REPOSITORY }}
