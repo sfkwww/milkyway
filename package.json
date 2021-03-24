@@ -1,20 +1,21 @@
 {
-  "name": "milkyway",
-  "version": "1.0.0",
-  "description": "Checks PR requests with a repository link that they fulfill certain activity requirements.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sfkwww/milkyway.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/sfkwww/milkyway/issues"
-  },
-  "homepage": "https://github.com/sfkwww/milkyway#readme"
-}
+    "name": "milkyway",
+    "version": "1.0.0",
+    "description": "Checks PR requests with a repository link that they fulfill certain activity requirements.",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/sfkwww/milkyway.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/sfkwww/milkyway/issues"
+    },
+    "homepage": "https://github.com/sfkwww/milkyway#readme"
+  }
+  
