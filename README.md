@@ -5,21 +5,22 @@ Checks PR requests with a repository link that they fulfill certain activity req
 
 ### `github_token`
 
-**Required** The GITHUB_TOKEN secret. This is required.
-### `pr_title`
-
-The title of the PR. Optional.
+**Required** The GITHUB_TOKEN secret.
 
 ### `pr_body`
 
-The body of the PR
+**Required** The body of the PR to check.
+
+### `pr_id`
+**Required** The PR number where the output is commented.
 
 ### `branch`
-Base branch of the PR. Default is main.
+**Required** Base branch of the PR. Default is main.
 
 ## Outputs
 
 This action has no outputs.
 
 ## Example usage
+
 
