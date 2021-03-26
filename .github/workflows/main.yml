@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Run index
       id: index
-      uses: sfkwww/milkyway@1
+      uses: sfkwww/milkyway@v0.1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         pr_body: ${{ github.event.pull_request.body }}
