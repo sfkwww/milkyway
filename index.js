@@ -22,9 +22,11 @@ try {
 
   const {data} = octokit.repos.get({owner, repo});
 
-  const {startgazers_count, watchers_count, open_issues_count} = data;
+  console.log(data)
 
-  const contributors = octokit.repos.listContributors({owner, repo});
+  //const {startgazers_count, watchers_count, open_issues_count} = data;
+
+  //const contributors = octokit.repos.listContributors({owner, repo});
 
 } catch (error) {
   core.setFailed(error.message);
