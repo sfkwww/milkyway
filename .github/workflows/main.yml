@@ -15,7 +15,7 @@ jobs:
       id: index
       uses: sfkwww/milkyway@v0.2
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.TOKEN }}
         pr_body: ${{ github.event.pull_request.body }}
         pr_id: ${{ github.event.pull_request.number }}
         repo: ${{ github.repository }}
