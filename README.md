@@ -23,7 +23,6 @@ Checks PR requests with a repository link that they fulfill certain activity req
 
 GitHub repository mentioned in `pr_body` if any. 
 
-
 ## Example usage
 
 
