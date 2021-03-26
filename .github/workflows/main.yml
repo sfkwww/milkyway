@@ -19,6 +19,6 @@ jobs:
         pr_body: ${{ github.event.pull_request.body }}
         pr_title: ${{ github.event.pull_request.title }}
         pr_id: ${{ github.event.pull_request.number }}
-        branch: ${{ GITHUB_REPOSITORY }}
+        repo: ${{ process.env.GITHUB_REPOSITORY }}
     - name: Get the output
       run: echo "The Repo was ${{ steps.index.outputs.repo }}"
