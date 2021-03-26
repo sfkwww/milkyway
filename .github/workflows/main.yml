@@ -11,7 +11,7 @@ name: Comments on Repo Activity PR
 on:
   pull_request:
     types:
-      - labled
+      - labeled
     branches: [ main ]
 
 jobs:
