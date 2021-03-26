@@ -1,13 +1,21 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Milkyway'
+description: 'Checks a PR request with a repository link that they fulfill certain activity requirements and then comments the results'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+   github_token:
+    description: 'Github token'
     required: true
-    default: 'World'
+   pr_body:
+    description: 'PR body'
+    required: true
+   pr_id:
+    description: 'Id of the pr request'
+    required: true
+   repo:
+    description: 'The repo of the pr request'
+    required: true
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  repo:
+    description: 'repo name that was parsed'
 runs:
   using: 'node12'
   main: 'index.js'
