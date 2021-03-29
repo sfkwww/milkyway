@@ -17,7 +17,7 @@ jobs:
       with:
         github_token: ${{ secrets.TOKEN }}
         pr_body: ${{ github.event.pull_request.body }}
-        min_stars: 10
+        min_stars: 10000
         min_watchers: 10
         min_contributors: 10
         min_forks: 1
