@@ -132,3 +132,5 @@ jobs:
             core.setFailed('The repository did not meet the minimum requirements')
           }
 ```
+
+*Note:* `fromJSON('["❌", "✔️"]')[boolean] }}` is used as a workaround since ternary operators don't exist for this context.
