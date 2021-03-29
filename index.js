@@ -16,7 +16,13 @@ try {
 
   const prBody = core.getInput('pr_body', {required: true});
   const re = /https:\/\/github\.com\/(?<owner>[A-Za-z0-9_.-]+)\/(?<repo>[A-Za-z0-9_.-]*[A-Za-z0-9_-])\/?.+/;
-  const {groups: {owner, repo}} = re.exec(prBody);
+  const regex = re.exec(prBody);
+
+  if (!regex) {
+    core.setFailed('No repo found. Format: https://github.com/owner/repo')
+  }
+
+  const {groups: {owner, repo}} = regex;
 
   core.setOutput('repo', `${owner}/${repo}`);
 
