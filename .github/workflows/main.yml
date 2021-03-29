@@ -19,5 +19,14 @@ jobs:
         pr_body: ${{ github.event.pull_request.body }}
         pr_id: ${{ github.event.pull_request.number }}
         repo: ${{ github.repository }}
-    - name: Get the output
-      run: echo "The Repo was ${{ steps.index.outputs.repo }}"
+    - name: Comment the results
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.TOKEN}}
+        script: |
+          github.issues.createComment({
+            issue_number: github.event.pull_request.number,
+            owner: github.repository.owner,
+            repo: github.repository.name,
+            body: `👋 Thanks for reporting! ${steps.index.output.repo}`
+          })
