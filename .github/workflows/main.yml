@@ -42,9 +42,9 @@ jobs:
             |---|---|---|
             |Stars ⭐              | ${{fromJSON(steps.index.outputs.stars).count}}             | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.stars).pass] }}   |
             |Commits 📦            | ${{fromJSON(steps.index.outputs.commits).count}}           | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.commits).pass] }} |
-            |Commits Last Year ⏱️  | ${{fromJSON(steps.index.outputs.commits_last_year).count}} | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.commits_last_year).pass] | }}
+            |Commits Last Year ⏱️  | ${{fromJSON(steps.index.outputs.commits_last_year).count}} | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.commits_last_year).pass] }} |
             |Watchers 👀           | ${{fromJSON(steps.index.outputs.watchers).count}}          | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.watchers).pass] }} |
-            |Contributors 🧑🏻‍🤝‍🧑🏻| ${{fromJSON(steps.index.outputs.contributors).count}}      | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.contributors).pass] }} |
+            |Contributors 🧑🏻‍🤝‍🧑🏻       | ${{fromJSON(steps.index.outputs.contributors).count}}      | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.contributors).pass] }} |
             |Forks 🍴               | ${{fromJSON(steps.index.outputs.forks).count}}             | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.forks).pass] }} |
             |Open Issues 🟢        | ${{fromJSON(steps.index.outputs.open_issues).count}}       | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.open_issues).pass] }} |
             `
