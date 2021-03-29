@@ -25,7 +25,7 @@ jobs:
         github-token: ${{secrets.TOKEN}}
         script: |
           github.issues.createComment({
-            issue_number: context.pull_request.number,
+            issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: `👋 Thanks for reporting! ${context.workflow.steps.index.output.repo}`
