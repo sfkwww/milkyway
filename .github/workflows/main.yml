@@ -19,6 +19,13 @@ jobs:
         pr_body: ${{ github.event.pull_request.body }}
         pr_id: ${{ github.event.pull_request.number }}
         repo: ${{ github.repository }}
+        min_stars: 10
+        min_watchers: 10
+        min_contributors: 10
+        min_forks: 1
+        min_commits: 100
+        min_commits_last_year: 10
+        min_open_issues: 10
     - name: Comment the results
       uses: actions/github-script@v3
       with:
@@ -28,5 +35,15 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `👋 Thanks for reporting! ${{steps.index.outputs.repo}}`
+            body: `
+            [ ${{steps.index.outputs.repo}} ]
+            -----------------------
+            - Stars ⭐: ${{steps.index.outputs.stars.count}} ${{steps.index.outputs.stars.pass ? ✔️ : ❌}}
+            - Commits 📦: ${{steps.index.outputs.commits.count}} ${{steps.index.outputs.commits.pass ? ✔️ : ❌}}
+            - Commits Last Year ⏱️: ${{steps.index.outputs.commits_last_year.count}} ${{steps.index.outputs.commits_last_year.pass ? ✔️ : ❌}}
+            - Watchers 👀: ${{steps.index.outputs.watchers.count}} ${{steps.index.outputs.watchers.pass ? ✔️ : ❌}}
+            - Contributors 🧑🏻‍🤝‍🧑🏻: ${{steps.index.outputs.contributors.count}} ${{steps.index.outputs.contributors.pass ? ✔️ : ❌}}
+            - Forks 🍴: ${{steps.index.outputs.forks.count}} ${{steps.index.outputs.forks.pass ? ✔️ : ❌}}
+            - Open Issues 🟢: ${{steps.index.outputs.open_issues.count}} ${{steps.index.outputs.open_issues.pass ? ✔️ : ❌}}
+            `
           })
