@@ -1,31 +1,32 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
-
-# Controls when the action will run. 
-on:
-  # Triggers the workflo
-name: Comments on Repo Activity PR
-
-# Controls when the action will run. 
 on:
   pull_request:
     types:
-      - labled
+      - labeled
     branches: [ main ]
 
 jobs:
   check-repo-activity-for-pr:
-    if: github.event.label.name == 'contribution_to_open_source'
+    if: github.event.label.name == 'contribution_to_opensource'
     runs-on: ubuntu-latest
     name: PR activity check
     steps:
     - name: Run index
       id: index
-      uses: actions/milkyway@v1
+      uses: sfkwww/milkyway@v0.3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.TOKEN }}
         pr_body: ${{ github.event.pull_request.body }}
-        pr_title: ${{ github.event.pull_request.title }}
         pr_id: ${{ github.event.pull_request.number }}
-        branch: ${{ GITHUB_REPOSITORY }}
+        repo: ${{ github.repository }}
+    - name: Comment the results
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.TOKEN}}
+        script: |
+          github.issues.createComment({
+            issue_number: context.pull_request.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `👋 Thanks for reporting! ${context.workflow.steps.index.output.repo}`
+          })
