@@ -13,20 +13,42 @@ jobs:
     steps:
     - name: Run index
       id: index
-      uses: sfkwww/milkyway@v0.3
+      uses: sfkwww/milkyway@v0.5
       with:
         github_token: ${{ secrets.TOKEN }}
         pr_body: ${{ github.event.pull_request.body }}
-        pr_id: ${{ github.event.pull_request.number }}
-        repo: ${{ github.repository }}
+        min_stars: 10000
+        min_watchers: 10
+        min_contributors: 10
+        min_forks: 1
+        min_commits: 100
+        min_commits_last_year: 10
+        min_open_issues: 10
+    - name: Echo
+      run: echo '${{ fromJSON(steps.index.outputs.stars).count }}'
     - name: Comment the results
       uses: actions/github-script@v3
       with:
         github-token: ${{secrets.TOKEN}}
         script: |
           github.issues.createComment({
-            issue_number: context.pull_request.number,
+            issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `👋 Thanks for reporting! ${context.workflow.steps.index.output.repo}`
+            body: `
+            [ ${{steps.index.outputs.repo}} ]
+            -----------------------
+            | Stat  |  Number |  Pass | 
+            |---|---|---|
+            |Stars ⭐              | ${{fromJSON(steps.index.outputs.stars).count}}             | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.stars).pass] }}   |
+            |Commits 📦            | ${{fromJSON(steps.index.outputs.commits).count}}           | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.commits).pass] }} |
+            |Commits Last Year ⏱️  | ${{fromJSON(steps.index.outputs.commits_last_year).count}} | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.commits_last_year).pass] }} |
+            |Watchers 👀           | ${{fromJSON(steps.index.outputs.watchers).count}}          | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.watchers).pass] }} |
+            |Contributors 🧑🏻‍🤝‍🧑🏻       | ${{fromJSON(steps.index.outputs.contributors).count}}      | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.contributors).pass] }} |
+            |Forks 🍴               | ${{fromJSON(steps.index.outputs.forks).count}}             | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.forks).pass] }} |
+            |Open Issues 🟢        | ${{fromJSON(steps.index.outputs.open_issues).count}}       | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.open_issues).pass] }} |
+            `
           })
+          if (!${{steps.index.outputs.final_pass}}) {
+            core.setFailed('The repository did not meet the minimum requirements')
+          }

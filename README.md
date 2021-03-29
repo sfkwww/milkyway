@@ -1,5 +1,5 @@
 # milkyway
-Checks PR requests with a repository link that they fulfill certain activity requirements.
+Parses a body of text for a repository link and then checks that they fulfill certain activity requirements. The results are returned as output in the workflow.
 
 ## Inputs
 
@@ -11,11 +11,17 @@ Checks PR requests with a repository link that they fulfill certain activity req
 
 **Required** The body of the PR to check.
 
-### `pr_id`
-**Required** The PR number where the output is commented.
+### Minimum Requirements
+The minimum amount of a specific stat that is required for the action to pass.
 
-### `branch`
-**Required** Base branch of the PR. Default is main.
+The following requirement inputs can be passed into the action, the default is 0:
+`min_stars`,
+`min_watchers`,
+`min_contributors`,
+`min_forks`,
+`min_commits`,
+`min_commits_last_year`,
+`min_open_issues`
 
 ## Outputs
 
@@ -23,19 +29,106 @@ Checks PR requests with a repository link that they fulfill certain activity req
 
 GitHub repository mentioned in `pr_body` if any. 
 
-### `stars`
-Number of stars for the repository.
+### Stats Output
+The stats for the repository are returned with the following format:
 
-### `watchers`
-Number of watchers of the repository.
+```
+stars: {
+  count: 10,
+  pass: true
+}
+```
 
-### `open_issues`
-Number of open issues the repository has.
+Where pass is if the  specific stat met the input requirements and count is the actual number for the repository.
 
-### `contributors`
-Number of contributors, including anonymous contributors.
+The following output stats are returned: 
+`stars`, `watchers`, `contributors`, `forks`, `commits`, `commits_last_year`, `open_issues`
 
-## Example usage
+**Note:** The result is returned as a string and needs to be parsed as JSON in order to access the object values. For example we used `fromJSON` to access the values in an action script.
+
+### `final_pass`
+The aggregated result of all the stat checks which signifies if the repo passes the checks or not.
+
+### Basic Usage
+This action only saves the stats to the workflow output and doesn't actually do anything with them. We recommend using another github action following this such as github-script to create a comment with the stats. In this case the stats would be saved in `steps.index.outputs`.
+
+```
+name: Repo Check
+on:
+  pull_request:
+    branches: [main]
+    
+jobs:
+  check-repo-activity:
+    runs-on: ubuntu-latest
+    name: PR activity check
+    steps:
+    - name: Run action
+      id: index
+      uses: sfkwww/milkyway@v1
+      with:
+        github_token: ${{ secrets.TOKEN }}
+        pr_body: ${{ github.event.pull_request.body }}
+        min_stars: 10
+        min_commits: 100
+```
+
+### Example Usage for DevOps Course
+When a TA lables a pull request with `contribution_to_opensource` the action will run and comment the PR with the repository stats. It will also pass or fail the merge check based on if the repository passes all of the checks.
 
 
+The github-script action created by the official Github Actions team is used to comment on the PR after our action produces the stats. It also fails the check if some stats didn't meet the requireement with `core.setFailed`.
+```
+name: Open Source Activity Check
+on:
+  pull_request:
+    types:
+      - labeled
+    branches: [ 2021 ]
 
+jobs:
+  check-repo-activity-for-pr:
+    if: github.event.label.name == 'contribution_to_opensource'
+    runs-on: ubuntu-latest
+    name: PR activity check
+    steps:
+    - name: Run action
+      id: index
+      uses: sfkwww/milkyway@v1
+      with:
+        github_token: ${{ secrets.TOKEN }}
+        pr_body: ${{ github.event.pull_request.body }}
+        min_stars: 10
+        min_watchers: 10
+        min_contributors: 10
+        min_forks: 1
+        min_commits: 100
+        min_commits_last_year: 10
+        min_open_issues: 10
+    - name: Comment the results
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.TOKEN}}
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `
+            [ ${{steps.index.outputs.repo}} ]
+            -----------------------
+            | Stat  |  Number |  Pass | 
+            |---|---|---|
+            |Stars ⭐              | ${{fromJSON(steps.index.outputs.stars).count}}             | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.stars).pass] }}   |
+            |Commits 📦            | ${{fromJSON(steps.index.outputs.commits).count}}           | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.commits).pass] }} |
+            |Commits Last Year ⏱️  | ${{fromJSON(steps.index.outputs.commits_last_year).count}} | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.commits_last_year).pass] }} |
+            |Watchers 👀           | ${{fromJSON(steps.index.outputs.watchers).count}}          | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.watchers).pass] }} |
+            |Contributors 🧑🏻‍🤝‍🧑🏻       | ${{fromJSON(steps.index.outputs.contributors).count}}      | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.contributors).pass] }} |
+            |Forks 🍴               | ${{fromJSON(steps.index.outputs.forks).count}}             | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.forks).pass] }} |
+            |Open Issues 🟢        | ${{fromJSON(steps.index.outputs.open_issues).count}}       | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.open_issues).pass] }} |
+            `
+          })
+          if (!${{steps.index.outputs.final_pass}}) {
+            core.setFailed('The repository did not meet the minimum requirements')
+          }
+```
