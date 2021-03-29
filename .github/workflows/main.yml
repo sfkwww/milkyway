@@ -25,7 +25,7 @@ jobs:
         min_commits_last_year: 10
         min_open_issues: 10
     - name: Echo
-      run: echo '${{ steps.index.outputs.stars.count }}'
+      run: echo '${{ fromJSON(steps.index.outputs.stars).count }}'
     - name: Comment the results
       uses: actions/github-script@v3
       with:
