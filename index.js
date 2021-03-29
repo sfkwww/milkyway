@@ -42,6 +42,9 @@ try {
     core.setOutput('forks', forks);
 
     return [stars, watchers, openIssues, forks];
+  }).catch(error =>  {
+    console.log(error);
+    core.setFailed(`Repo not found: ${owner}/${repo}`);
   });
 
   const contributionData = octokit.repos.listContributors({owner, repo, per_page: 1, anon: true}).then(data => {
