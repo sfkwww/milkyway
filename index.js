@@ -15,7 +15,7 @@ try {
   const octokit = new Octokit({auth: `token ${githubToken}`});
 
   const prBody = core.getInput('pr_body', {required: true});
-  const re = /https:\/\/github\.com\/(?<owner>\w+)\/(?<repo>\w+)\/?.+/;
+  const re = /https:\/\/github\.com\/(?<owner>[A-Za-z0-9_.-]+)\/(?<repo>[A-Za-z0-9_.-]*[A-Za-z0-9_-])\/?.+/;
   const {groups: {owner, repo}} = re.exec(prBody);
 
   core.setOutput('repo', `${owner}/${repo}`);
