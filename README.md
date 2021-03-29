@@ -23,6 +23,17 @@ Checks PR requests with a repository link that they fulfill certain activity req
 
 GitHub repository mentioned in `pr_body` if any. 
 
+### `stars`
+Number of stars for the repository.
+
+### `watchers`
+Number of watchers of the repository.
+
+### `open_issues`
+Number of open issues the repository has.
+
+### `contributors`
+Number of contributors, including anonymous contributors.
 
 ## Example usage
 

@@ -20,13 +20,30 @@ try {
 
   core.setOutput('repo', `${owner}/${repo}`)
 
-  const {data} = octokit.repos.get({owner, repo});
+  octokit.repos.get({owner, repo}).then(({data}) => {
+    const {stargazers_count, subscribers_count, open_issues_count, forks_count} = data;
 
-  console.log(data)
+    core.setOutput('stars', stargazers_count);
+    core.setOutput('watchers', subscribers_count);
+    core.setOutput('open_issues', open_issues_count);
+    core.setOutput('forks', forks_count);
+  });
 
-  //const {startgazers_count, watchers_count, open_issues_count} = data;
+  octokit.repos.listContributors({owner, repo, per_page: 1, anon: true}).then(data => {
+    const {link} = data.headers;
 
-  //const contributors = octokit.repos.listContributors({owner, repo});
+    let contributors = '';
+    for (let i = link.lastIndexOf('>');i--;) {
+      const c = link[i];
+      if (isNaN(c))
+        break;
+      contributors = c + contributors;
+    }
+
+    core.setOutput('contributors', contributors)
+
+  }).catch(error => console.log(error));
+
 
 } catch (error) {
   core.setFailed(error.message);
