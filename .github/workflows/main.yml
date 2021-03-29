@@ -24,6 +24,8 @@ jobs:
         min_commits: 100
         min_commits_last_year: 10
         min_open_issues: 10
+    - name: Echo
+      run: echo '${{ steps.index.outputs.stars }}'
     - name: Comment the results
       uses: actions/github-script@v3
       with:
