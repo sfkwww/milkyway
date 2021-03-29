@@ -1,5 +1,5 @@
 # milkyway
-Checks PR requests with a repository link that they fulfill certain activity requirements.
+Parses a body of text for a repository link and then checks that they fulfill certain activity requirements. The results are returned as output in the workflow.
 
 ## Inputs
 
