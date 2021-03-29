@@ -36,12 +36,6 @@ jobs:
             body: `
             [ ${{steps.index.outputs.repo}} ]
             -----------------------
-            - Stars ⭐: ${{steps.index.outputs.stars.count}} ${{steps.index.outputs.stars.pass ? ✔️ : ❌}}
-            - Commits 📦: ${{steps.index.outputs.commits.count}} ${{steps.index.outputs.commits.pass ? ✔️ : ❌}}
-            - Commits Last Year ⏱️: ${{steps.index.outputs.commits_last_year.count}} ${{steps.index.outputs.commits_last_year.pass ? ✔️ : ❌}}
-            - Watchers 👀: ${{steps.index.outputs.watchers.count}} ${{steps.index.outputs.watchers.pass ? ✔️ : ❌}}
-            - Contributors 🧑🏻‍🤝‍🧑🏻: ${{steps.index.outputs.contributors.count}} ${{steps.index.outputs.contributors.pass ? ✔️ : ❌}}
-            - Forks 🍴: ${{steps.index.outputs.forks.count}} ${{steps.index.outputs.forks.pass ? ✔️ : ❌}}
-            - Open Issues 🟢: ${{steps.index.outputs.open_issues.count}} ${{steps.index.outputs.open_issues.pass ? ✔️ : ❌}}
+            - Stars ⭐: ${{steps.index.outputs.stars.count}} ${{ fromJSON('["❌", "✔️"]')[steps.index.outputs.stars.pass] }}
             `
           })
