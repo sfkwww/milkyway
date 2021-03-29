@@ -49,3 +49,6 @@ jobs:
             |Open Issues 🟢        | ${{fromJSON(steps.index.outputs.open_issues).count}}       | ${{ fromJSON('["❌", "✔️"]')[fromJSON(steps.index.outputs.open_issues).pass] }} |
             `
           })
+          if (!${{steps.index.outputs.final_pass}}) {
+            core.setFailed('The repository did not meet the minimum requirements')
+          }
