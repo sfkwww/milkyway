@@ -7,15 +7,44 @@ inputs:
    pr_body:
     description: 'PR body'
     required: true
-   pr_id:
-    description: 'Id of the pr request'
-    required: true
-   repo:
-    description: 'The repo of the pr request'
-    required: true
+   min_stars:
+    description: 'Minimum stars to pass'
+    default: 0
+   min_watchers:
+    description: 'Minimum watchers to pass'
+    default: 0
+   min_contributors:
+    description: 'Minimum contributors to pass'
+    default: 0
+   min_forks:
+    description: 'Minimum forks to pass'
+    default: 0
+   min_commits:
+    description: 'Minimum commits to pass'
+    default: 0
+   min_commits_last_year:
+    description: 'Minimum commits within the last full year to pass'
+    default: 0
+   min_open_issues:
+    description: 'Minimum issues to pass'
+    default: 0
 outputs:
   repo:
     description: 'repo name that was parsed'
+  stars:
+    description: 'Star stats'
+  watchers:
+    description: 'Watcher stats'
+  contributors:
+    description: 'Contributor stats'
+  forks:
+    description: 'Fork stats'
+  commits:
+    description: 'Commit stats'
+  commits_last_year:
+    description: 'Commits within the last year'
+  open_issues:
+    description: 'Issue stats'
 runs:
   using: 'node12'
   main: 'index.js'
