@@ -28,43 +28,53 @@ try {
   const minCommitsLastYear = parseInt(core.getInput('min_commits_last_year'));
   const minOpenIssues = parseInt(core.getInput('min_open_issues'));
 
-
-  octokit.repos.get({owner, repo}).then(({data}) => {
+  const repoData = octokit.repos.get({owner, repo}).then(({data}) => {
     const {stargazers_count, subscribers_count, open_issues_count, forks_count} = data;
-    const stars = parseInt(stargazers_count);
-    const watchers = parseInt(subscribers_count);
-    const openIssues = parseInt(open_issues_count);
-    const forks = parseInt(forks_count);
 
-    core.setOutput('stars', {count: stars, pass: stars >= minStars});
-    core.setOutput('watchers', {count: watchers, pass: watchers >= minWatchers});
-    core.setOutput('open_issues', {count: openIssues, pass: openIssues >= minOpenIssues});
-    core.setOutput('forks', {count: forks, pass: forks >= minForks});
+    const stars = passCheck(stargazers_count, minStars);
+    const watchers = passCheck(subscribers_count, minWatchers);
+    const openIssues = passCheck(open_issues_count, minOpenIssues);
+    const forks = passCheck(forks_count, minForks);
+
+    core.setOutput('stars', stars);
+    core.setOutput('watchers', watchers);
+    core.setOutput('open_issues', openIssues);
+    core.setOutput('forks', forks);
+
+    return [stars, watchers, openIssues, forks];
   });
 
-  octokit.repos.listContributors({owner, repo, per_page: 1, anon: true}).then(data => {
+  const contributionData = octokit.repos.listContributors({owner, repo, per_page: 1, anon: true}).then(data => {
     const {link} = data.headers;
 
-    const contributors = getLastPageNumber(link);
+    const contributors = passCheck(getLastPageNumber(link), minContributors);
 
-    core.setOutput('contributors', {count: contributors, pass: contributors >= minContributors})
+    core.setOutput('contributors', contributors);
 
+    return [contributors];
   }).catch(error => console.log(error));
 
-  octokit.repos.getCommitActivityStats({owner, repo}).then(({data}) => {
-    const commitsLastYear = data.reduce((sum, week) => sum + week.total, 0);
+  const commitActivity = octokit.repos.getCommitActivityStats({owner, repo}).then(({data}) => {
+    const commitsLastYear = passCheck(data.reduce((sum, week) => sum + week.total, 0), minCommitsLastYear);
 
-    core.setOutput('commits_last_year', {count: commitsLastYear, pass: commitsLastYear >= minCommitsLastYear});
+    core.setOutput('commits_last_year', commitsLastYear);
+
+    return [commitsLastYear]
   });
 
-  octokit.repos.listCommits({owner, repo, per_page: 1}).then(data => {
+  const commitData = octokit.repos.listCommits({owner, repo, per_page: 1}).then(data => {
     const {link} = data.headers;
 
-    const commits = getLastPageNumber(link);
+    const commits = passCheck(getLastPageNumber(link), minCommits);
 
-    core.setOutput('commits', {count: commits, pass: commits >= minCommits});
+    core.setOutput('commits', commits);
+
+    return [commits];
   });
 
+  Promise.all([repoData, contributionData, commitActivity, commitData]).then(results => {
+    core.setOutput('final_pass', results.flat().every(({pass}) => pass));
+  })
 
 } catch (error) {
   core.setFailed(error.message);
@@ -80,4 +90,8 @@ function getLastPageNumber(link) {
   }
 
   return parseInt(number);
+}
+
+function passCheck(count, requirement) {
+  return {count, pass: count >= requirement}
 }
