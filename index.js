@@ -52,7 +52,15 @@ try {
     core.setOutput('contributors', contributors);
 
     return [contributors];
-  }).catch(error => console.log(error));
+  }).catch(error => {
+        console.log(error);
+
+        // Can fail on very large repositories, like torvalds/linux, which has 5000+ contributors on GitHub.com
+        const contributors = {count: '5000+', pass: true};
+        core.setOutput('contributors', contributors);
+
+        return Promise.resolve(contributors);
+  });
 
   const commitActivity = octokit.repos.getCommitActivityStats({owner, repo}).then(({data}) => {
     const commitsLastYear = passCheck(data.reduce((sum, week) => sum + week.total, 0), minCommitsLastYear);
