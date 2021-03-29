@@ -33,8 +33,8 @@ GitHub repository mentioned in `pr_body` if any.
 The stats for the repository are returned with the following format:
 
 ```
-id: {
-  id_count: 10,
+stars: {
+  count: 10,
   pass: true
 }
 ```
