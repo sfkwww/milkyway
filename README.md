@@ -96,7 +96,7 @@ jobs:
       id: index
       uses: sfkwww/milkyway@v1
       with:
-        github_token: ${{ secrets.TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         pr_body: ${{ github.event.pull_request.body }}
         min_stars: 10
         min_watchers: 10
@@ -108,7 +108,7 @@ jobs:
     - name: Comment the results
       uses: actions/github-script@v3
       with:
-        github-token: ${{secrets.TOKEN}}
+        github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           github.issues.createComment({
             issue_number: context.issue.number,
