@@ -16,7 +16,7 @@ jobs:
       uses: sfkwww/milkyway@v0.9
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        pr_body: ${{ github.event.pull_request.body }}
+        text: ${{ github.event.pull_request.body }}
         min_stars: 10
         min_watchers: 10
         min_contributors: 10
