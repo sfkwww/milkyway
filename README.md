@@ -136,6 +136,7 @@ jobs:
 *Note:* `fromJSON('["❌", "✔️"]')[boolean] }}` is used as a workaround since ternary operators don't exist for this context.
 
 *Example Result*
+
   [ rust-lang/rust ]
   -----------------------
   | Stat  |  Number |  Pass | 
