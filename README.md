@@ -134,3 +134,16 @@ jobs:
 ```
 
 *Note:* `fromJSON('["❌", "✔️"]')[boolean] }}` is used as a workaround since ternary operators don't exist for this context.
+
+*Example Result*
+  [ rust-lang/rust ]
+  -----------------------
+  | Stat  |  Number |  Pass | 
+  |---|---|---|
+  |Stars ⭐              | 53440             | ✔️   |
+  |Commits 📦            | 141152           | ✔️ |
+  |Commits Last Year ⏱️  | 14472 | ✔️ |
+  |Watchers 👀           | 1489          | ✔️ |
+  |Contributors 🧑🏻‍🤝‍🧑🏻       | 4135      | ✔️ |
+  |Forks 🍴               | 7696             | ✔️ |
+  |Open Issues 🟢        | 7056       | ✔️ |
