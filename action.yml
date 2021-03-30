@@ -4,8 +4,8 @@ inputs:
    github_token:
     description: 'Github token'
     required: true
-   pr_body:
-    description: 'PR body'
+   text:
+    description: 'The text to be parsed'
     required: true
    min_stars:
     description: 'Minimum stars to pass'
