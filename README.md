@@ -7,9 +7,9 @@ Parses a body of text for a repository link and then checks that they fulfill ce
 
 **Required** The GITHUB_TOKEN secret.
 
-### `pr_body`
+### `text`
 
-**Required** The body of the PR to check.
+**Required** The text which is parsed for a repository.
 
 ### Minimum Requirements
 The minimum amount of a specific stat that is required for the action to pass.
@@ -68,7 +68,7 @@ jobs:
       uses: sfkwww/milkyway@v1
       with:
         github_token: ${{ secrets.TOKEN }}
-        pr_body: ${{ github.event.pull_request.body }}
+        text: ${{ github.event.pull_request.body }}
         min_stars: 10
         min_commits: 100
 ```
@@ -97,7 +97,7 @@ jobs:
       uses: sfkwww/milkyway@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        pr_body: ${{ github.event.pull_request.body }}
+        text: ${{ github.event.pull_request.body }}
         min_stars: 10
         min_watchers: 10
         min_contributors: 10
